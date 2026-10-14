@@ -5,12 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     window.addEventListener('scroll', () => {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // If user scrolls down more than 10 pixels, make the background black
         if (scrollTop > 10) {
             topMenu.classList.add('scrolled');
         } else {
-            // If at the very top, make it transparent again
             topMenu.classList.remove('scrolled');
         }
     });
@@ -35,11 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Attach listeners to Sidebar
     menuProfile.addEventListener('click', (e) => { e.preventDefault(); switchTab(true); });
     menuStatus.addEventListener('click', (e) => { e.preventDefault(); switchTab(false); });
     
-    // If user clicks "Member Status" text inside the profile section, switch tab
     secProfile.addEventListener('click', (e) => {
         if(e.target.innerText.toLowerCase().includes('member status')) {
             switchTab(false);
@@ -52,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = ''; 
         if (!roleString) return;
 
-        // Split by comma and create list items
         const roles = roleString.split(',');
         roles.forEach(role => {
             if (role.trim()) {
@@ -77,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!trimmed) return;
 
             if (trimmed.startsWith('-')) {
-                // If text has (-), separate and add as a nested bullet
                 if (!subList) {
                     subList = document.createElement('ul');
                     if(currentMainItem) currentMainItem.appendChild(subList);
@@ -86,11 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 subLi.textContent = trimmed.substring(1).trim();
                 subList.appendChild(subLi);
             } else {
-                // Main parent bullet with a checkmark
                 currentMainItem = document.createElement('li');
                 currentMainItem.innerHTML = `✓ ${trimmed}`;
                 listEl.appendChild(currentMainItem);
-                subList = null; // Reset for the next main item
+                subList = null; 
             }
         });
     }
@@ -101,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const sheetId = '11fZl1_k9Txz6zXZqZnZuKcH5PtF6QQuY';
             const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
             
-            // Fetch User Data from Google Sheets
             Papa.parse(csvUrl, {
                 download: true,
                 header: true,
@@ -112,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         const user = data[0]; 
                         const userPlan = user.Plan || 'Premium (Legacy)';
                         
-                        // Update Profile UI
+                        // Profile UI Updates
                         document.getElementById('user-name').textContent = user.Name || 'Admin User';
                         document.getElementById('user-email').textContent = user.Email || 'admin@gmail.com';
                         document.getElementById('user-phone').textContent = user.Phone || '011 345 6789';
@@ -121,7 +112,35 @@ document.addEventListener('DOMContentLoaded', () => {
                         populateRoles(user.ACTI_Roles, 'acti-roles');
                         populateRoles(user.ASTI_Roles, 'asti-roles');
 
-                        // 1. Fetch and Parse Pricing from Plan_Price.txt based on userPlan
+                        // PROFILE PICTURE LOGIC
+                        const userGender = user.Gender || 'L';
+                        const profilePicId = user.Profile_Pic_ID ? user.Profile_Pic_ID.trim() : '';
+                        const profileImg = document.getElementById('user-profile-pic');
+                        
+                        const baseUrl = "https://drive.google.com/uc?export=view&id=";
+                        const defaultMaleId = '1rpQ4Zy42TvwZLiy3oplSDvtVeGgDgzKM';
+                        const defaultFemaleId = '1YAXVj4nkU75hiV5U0ewPmoU3qErDMB4-';
+
+                        if (profilePicId) {
+                            profileImg.src = baseUrl + profilePicId;
+                        } else {
+                            if (userGender.toUpperCase() === 'P' || userGender.toLowerCase() === 'female') {
+                                profileImg.src = baseUrl + defaultFemaleId;
+                            } else {
+                                profileImg.src = baseUrl + defaultMaleId;
+                            }
+                        }
+
+                        profileImg.onerror = function() {
+                            if (userGender.toUpperCase() === 'P' || userGender.toLowerCase() === 'female') {
+                                profileImg.src = baseUrl + defaultFemaleId;
+                            } else {
+                                profileImg.src = baseUrl + defaultMaleId;
+                            }
+                            profileImg.onerror = null; 
+                        };
+
+                        // 1. Fetch Pricing 
                         try {
                             const priceRes = await fetch('./membership/Plan_Price.txt');
                             if (priceRes.ok) {
@@ -131,28 +150,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
                                 for (let line of lines) {
                                     if (!line.trim()) continue;
-                                    
                                     const parts = line.split('|');
-                                    if (parts.length === 2) {
-                                        const planName = parts[0].trim();
-                                        const price = parts[1].trim();
-                                        
-                                        if (planName === userPlan) {
-                                            matchedPrice = price;
-                                            break;
-                                        }
+                                    if (parts.length === 2 && parts[0].trim() === userPlan) {
+                                        matchedPrice = parts[1].trim();
+                                        break;
                                     }
                                 }
                                 document.getElementById('plan-price').textContent = matchedPrice;
                             } else {
-                                document.getElementById('plan-price').textContent = "RM 10 / month"; // Fallback
+                                document.getElementById('plan-price').textContent = "RM 10 / month"; 
                             }
                         } catch (error) {
                             console.error("Error loading price text:", error);
                             document.getElementById('plan-price').textContent = "RM 10 / month";
                         }
 
-                        // 2. Fetch Plan Inclusions from the respective .txt file
+                        // 2. Fetch Plan Inclusions
                         try {
                             const planDetailsRes = await fetch(`./membership/${userPlan}.txt`);
                             if (planDetailsRes.ok) {
