@@ -42,7 +42,6 @@ body {
 #top-menu .logo-text { font-weight: bold; font-size: 18px; }
 #top-menu .nav-links { display: flex; list-style: none; gap: 15px; align-items: center; }
 #top-menu a { text-decoration: none; color: white; padding: 5px 8px; }
-
 #top-menu a.active { font-weight: bold; background-color: rgba(255, 255, 255, 0.2); border-radius: 4px; }
 
 /* Banner Update */
@@ -148,21 +147,6 @@ footer {
     font-weight: bold;
 }
 
-/* Responsive / Mobile View */
-@media (max-width: 768px) {
-    .dashboard-container { flex-direction: column; }
-    
-    #sidebar { width: 100%; border-right: none; border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px; padding-right: 0; }
-    #sidebar-menu { display: flex; justify-content: space-around; flex-wrap: wrap; }
-    #sidebar a { padding: 8px 10px; text-align: center; }
-    
-    #content { padding-left: 0; display: flex; flex-direction: column; }
-    
-    #section-status { display: flex; flex-direction: column; }
-    #membership-image { order: 99; margin-bottom: 20px; margin-top: 40px; }
-    .contact-admin { order: 98; }
-}
-
 /* --- Login Page Specific Styles --- */
 .login-wrapper {
     display: flex;
@@ -170,7 +154,7 @@ footer {
     align-items: center;
     flex: 1;
     padding: 60px 20px;
-    margin-top: 50px; /* Offset for fixed navbar */
+    margin-top: 50px; 
 }
 
 .login-card {
@@ -194,7 +178,7 @@ footer {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
-    font-family: sans-serif; /* Keep inputs standard for readability */
+    font-family: sans-serif;
 }
 
 .login-card input:focus {
@@ -215,9 +199,7 @@ footer {
     transition: background-color 0.2s;
 }
 
-.primary-btn:hover { 
-    background-color: #a8d0f0; 
-}
+.primary-btn:hover { background-color: #a8d0f0; }
 
 .error-msg { 
     color: #d93025; 
@@ -262,4 +244,19 @@ footer {
     font-size: 11px; 
     color: #888; 
     font-family: sans-serif;
+}
+
+/* Responsive / Mobile View */
+@media (max-width: 768px) {
+    .dashboard-container { flex-direction: column; }
+    
+    #sidebar { width: 100%; border-right: none; border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px; padding-right: 0; }
+    #sidebar-menu { display: flex; justify-content: space-around; flex-wrap: wrap; }
+    #sidebar a { padding: 8px 10px; text-align: center; }
+    
+    #content { padding-left: 0; display: flex; flex-direction: column; }
+    
+    #section-status { display: flex; flex-direction: column; }
+    #membership-image { order: 99; margin-bottom: 20px; margin-top: 40px; }
+    .contact-admin { order: 98; }
 }
