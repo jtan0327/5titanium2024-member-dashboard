@@ -39,7 +39,14 @@ body {
 
 .logo-container { display: flex; align-items: center; gap: 10px; }
 .navbar-logo { height: 40px; width: auto; }
-#top-menu .logo-text { font-weight: bold; font-size: 18px; }
+
+/* FORCED ZCOOL KuaiLe FONT FOR LOGO TEXT */
+#top-menu .logo-text { 
+    font-weight: bold; 
+    font-size: 18px; 
+    font-family: 'ZCOOL KuaiLe', cursive, sans-serif !important;
+}
+
 #top-menu .nav-links { display: flex; list-style: none; gap: 15px; align-items: center; }
 #top-menu a { text-decoration: none; color: white; padding: 5px 8px; }
 #top-menu a.active { font-weight: bold; background-color: rgba(255, 255, 255, 0.2); border-radius: 4px; }
@@ -52,6 +59,8 @@ body {
     align-items: center; 
     justify-content: center; 
     color: white;
+    /* FORCED ZCOOL KuaiLe FONT FOR BANNER */
+    font-family: 'ZCOOL KuaiLe', cursive, sans-serif !important; 
 }
 
 /* Dashboard Layout */
@@ -74,13 +83,13 @@ body {
 }
 #sidebar a.active, #sidebar a:hover { font-weight: bold; background-color: #cfe2f3; }
 
-/* New Logout Button Styling */
+/* Logout Button Styling */
 #sidebar a.logout-btn {
-    color: #d93025; /* Red color to indicate exit/logout */
-    margin-top: 30px; /* Gives it some space from the other tabs */
+    color: #d93025; 
+    margin-top: 30px; 
 }
 #sidebar a.logout-btn:hover {
-    background-color: #fce8e6; /* Light red hover effect */
+    background-color: #fce8e6; 
 }
 
 /* Main Content Area */
@@ -195,7 +204,6 @@ footer {
     #sidebar { width: 100%; border-right: none; border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px; padding-right: 0; }
     #sidebar-menu { display: flex; justify-content: space-around; flex-wrap: wrap; }
     #sidebar a { padding: 8px 10px; text-align: center; }
-    /* Override margin for logout on mobile so it sits cleanly */
     #sidebar a.logout-btn { margin-top: 0; }
     
     #content { padding-left: 0; display: flex; flex-direction: column; }
