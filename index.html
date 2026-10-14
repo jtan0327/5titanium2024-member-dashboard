@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>5 Titanium 2024 - Member Dashboard</title>
+    
+    <!-- Import ZCOOL KuaiLe for Chinese characters -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Footer Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Top Menu -->
     <nav id="top-menu">
         <div class="logo-container">
             <img src="5TI 2024 LO.png" alt="5TI Logo" class="navbar-logo">
@@ -28,9 +34,13 @@
         </ul>
     </nav>
 
+    <!-- Scrolling Banner -->
     <header id="banner"></header>
 
+    <!-- Main Dashboard Layout -->
     <div class="dashboard-container">
+        
+        <!-- Sidebar Navigation -->
         <aside id="sidebar">
             <ul id="sidebar-menu">
                 <li><a href="#" id="menu-profile" class="active">Profile</a></li>
@@ -39,7 +49,9 @@
             </ul>
         </aside>
 
+        <!-- Dynamic Content Area -->
         <main id="content">
+            
             <!-- Profile Section -->
             <section id="section-profile">
                 
@@ -64,10 +76,12 @@
                 <!-- Full Department List -->
                 <div class="roles-container">
                     <h3>Department:</h3>
+                    
                     <div class="role-group">
                         <p class="role-title">Association Class of Titanium (ACTI)</p>
                         <ul id="acti-roles" class="role-list"></ul>
                     </div>
+                    
                     <div class="role-group">
                         <p class="role-title">Association Senior of Titanium (ASTI)</p>
                         <ul id="asti-roles" class="role-list"></ul>
@@ -79,13 +93,17 @@
             <section id="section-status" style="display: none;">
                 <h2>Your current plan: <span id="plan-name">Premium (Legacy)</span></h2>
                 <p class="monthly-charge">Monthly charge: <span id="plan-price">Loading...</span></p>
+                
                 <div class="plan-details">
                     <h3>Your plan includes:</h3>
                     <ul id="plan-includes" class="plan-list"></ul>
                 </div>
+                
                 <p class="contact-admin"><i>* please contact administrator to change your plan</i></p>
+                
                 <img src="assets/membership_image.jpg" alt="Membership Image" id="membership-image" onerror="this.style.display='none'">
             </section>
+
         </main>
     </div>
     
@@ -99,6 +117,7 @@
             <a href="http://www.facebook.com/groups/5titanium2024/" target="_blank" aria-label="Facebook Group"><i class="fa-brands fa-facebook-f"></i></a>
             <a href="https://www.instagram.com/acti_asti24sdnbhd/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
         </div>
+        
         <div class="copyright-text">
             <p>@5 TITANIUM 2024</p>
             <p>@Copyright 2024/2025 5TITANIUM</p>
@@ -108,6 +127,7 @@
         </div>
     </footer>
 
+    <!-- PapaParse for easy Google Sheets CSV parsing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <script src="script.js"></script>
 </body>
