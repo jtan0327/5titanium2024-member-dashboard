@@ -22,19 +22,18 @@ body {
     justify-content: space-between; 
     align-items: center; 
     padding: 15px 30px; 
-    position: fixed; /* Keeps menu at the top of the viewport */
+    position: fixed; 
     top: 0; 
     left: 0; 
     width: 100%;
     z-index: 1000; 
-    background-color: transparent; /* Initially transparent */
+    background-color: transparent; 
     transition: background-color 0.3s ease; 
     color: white; 
 }
 
-/* Scrolled state applied via JS */
 #top-menu.scrolled {
-    background-color: #1a1a1a; /* Solid black/dark grey when scrolled */
+    background-color: #1a1a1a; 
     border-bottom: 1px solid #333;
 }
 
@@ -44,13 +43,11 @@ body {
 #top-menu .nav-links { display: flex; list-style: none; gap: 15px; align-items: center; }
 #top-menu a { text-decoration: none; color: white; padding: 5px 8px; }
 
-/* Invert the active tab color for dark background */
 #top-menu a.active { font-weight: bold; background-color: rgba(255, 255, 255, 0.2); border-radius: 4px; }
 
 /* Banner Update */
 #banner { 
-    /* The banner now sits behind the fixed menu */
-    background-color: #4a86e8; /* Replace with your actual banner image via background-image */
+    background-color: #4a86e8; 
     height: 250px; 
     display: flex; 
     align-items: center; 
@@ -81,13 +78,19 @@ body {
 /* Main Content Area */
 #content { flex: 1; padding-left: 30px; }
 
-/* Profile Section Fonts & Styles */
-.profile-pic-container { margin-bottom: 15px; display: flex; }
-#user-profile-pic { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #cfe2f3; background-color: #eee; }
+/* Profile Header Layout (Picture Left, Text Right) */
+.profile-header { display: flex; align-items: center; gap: 20px; margin-bottom: 25px; }
+#user-profile-pic { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid #cfe2f3; background-color: #eee; flex-shrink: 0; }
 
-.name-display { font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+.profile-header-text { display: flex; flex-direction: column; }
+.name-display { font-size: 20px; font-weight: bold; margin-bottom: 5px; }
+.top-role { font-size: 16px; margin-bottom: 3px; }
+
+/* Contact Info & Link */
 .contact-info { margin-bottom: 25px; }
 .contact-info p { font-size: 14px; margin-bottom: 5px; }
+.status-link { color: #4a86e8; text-decoration: none; font-weight: bold; cursor: pointer; }
+.status-link:hover { text-decoration: underline; }
 
 .roles-container h3 { font-size: 16px; margin-bottom: 10px; }
 .role-title { font-weight: bold; font-size: 14px; margin-top: 15px; }
@@ -105,7 +108,7 @@ body {
 
 /* Footer Styles */
 footer { 
-    background: #ffffff; /* Explicitly set to white */
+    background: #ffffff; 
     color: #333; 
     text-align: center; 
     padding: 30px 20px; 
@@ -126,43 +129,35 @@ footer {
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: #000; /* Icon color set to black */
+    background-color: #000; 
     color: #fff;
     border-radius: 50%;
     text-decoration: none;
-    font-size: 18px; /* Icon is larger than the text */
+    font-size: 18px; 
     transition: background-color 0.3s ease;
 }
 
-.social-icons a[aria-label="WhatsApp"] {
-    background-color: white;
-    color: black;
-    border: 2px solid black;
-}
-
-.social-icons a:hover {
-    opacity: 0.8;
-}
+.social-icons a[aria-label="LinkTree"] { background-color: #43E660; }
+.social-icons a[aria-label="WhatsApp"] { background-color: white; color: black; border: 2px solid black; }
+.social-icons a:hover { opacity: 0.8; }
 
 .copyright-text p {
-    font-size: 9px; /* Footer text size set to 9 */
+    font-size: 9px; 
     line-height: 1.4;
     margin: 2px 0;
     font-weight: bold;
 }
 
-/* Responsive / Mobile View (Shrink & Collapse) */
+/* Responsive / Mobile View */
 @media (max-width: 768px) {
     .dashboard-container { flex-direction: column; }
     
-    /* Auto-combine sidebar under top section */
     #sidebar { width: 100%; border-right: none; border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px; padding-right: 0; }
     #sidebar-menu { display: flex; justify-content: space-around; flex-wrap: wrap; }
     #sidebar a { padding: 8px 10px; text-align: center; }
     
     #content { padding-left: 0; display: flex; flex-direction: column; }
     
-    /* Place membership image at the bottom before footer when collapsed */
     #section-status { display: flex; flex-direction: column; }
     #membership-image { order: 99; margin-bottom: 20px; margin-top: 40px; }
     .contact-admin { order: 98; }
