@@ -101,7 +101,60 @@ body {
 .contact-admin { font-size: 12px; color: #d93025; margin-top: 30px; }
 #membership-image { max-width: 100%; margin-top: 20px; border-radius: 8px; }
 
-footer { background: #333; color: white; text-align: center; padding: 20px; margin-top: auto; }
+/* Footer Styles */
+footer { 
+    background: #ffffff; /* White background based on the image */
+    color: #333; 
+    text-align: center; 
+    padding: 30px 20px; 
+    margin-top: auto; 
+    border-top: 1px solid #eee;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #666; /* Dark grey circle */
+    color: white;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+/* Specific color override for LinkTree since it's green in the image */
+.social-icons a[aria-label="LinkTree"] {
+    background-color: #43E660; 
+}
+
+/* Specific style for WhatsApp to match the white background/black icon in the image */
+.social-icons a[aria-label="WhatsApp"] {
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    font-size: 20px;
+}
+
+.social-icons a:hover {
+    opacity: 0.8;
+}
+
+.copyright-text p {
+    font-size: 14px;
+    line-height: 1.4;
+    margin: 2px 0;
+    font-weight: bold;
+}
 
 /* Responsive / Mobile View (Shrink & Collapse) */
 @media (max-width: 768px) {
