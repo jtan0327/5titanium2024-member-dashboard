@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     menuProfile.addEventListener('click', (e) => { e.preventDefault(); switchTab(true); });
     menuStatus.addEventListener('click', (e) => { e.preventDefault(); switchTab(false); });
     
-    // Jump to Plan Details when Member Status is clicked
     document.getElementById('link-member-status').addEventListener('click', (e) => { 
         e.preventDefault(); 
         switchTab(false); 
@@ -99,28 +98,42 @@ document.addEventListener('DOMContentLoaded', () => {
             const sheetId = '11fZl1_k9Txz6zXZqZnZuKcH5PtF6QQuY';
             const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
             
+            // Check who is logged in
+            const loggedInEmail = localStorage.getItem('loggedInEmail');
+            
             Papa.parse(csvUrl, {
                 download: true,
                 header: false, // Turned off header to bypass the 'member_details' title row
                 complete: async function(results) {
                     const data = results.data;
                     
-                    // Find the exact row where the real headers start (Row 2 in your sheet)
+                    // Find the exact row where the real headers start
                     const headerRowIndex = data.findIndex(row => row[0] === 'Name' && row[1] === 'email');
                     
                     if (headerRowIndex !== -1 && data.length > headerRowIndex + 1) {
-                        // Extract the data from the row immediately below the headers (Row 3 in your sheet)
-                        const userRow = data[headerRowIndex + 1]; 
+                        let targetUserRow = null;
+
+                        // Look for the specific logged-in user by matching email
+                        if (loggedInEmail) {
+                            targetUserRow = data.slice(headerRowIndex + 1).find(row => {
+                                return row[1] && row[1].trim().toLowerCase() === loggedInEmail.toLowerCase();
+                            });
+                        }
                         
-                        // Map data directly by column order from your sheet screenshot
-                        const userName = userRow[0] ? userRow[0].trim() : 'Admin User';
-                        const userEmail = userRow[1] ? userRow[1].trim() : 'admin@gmail.com';
-                        const userGender = userRow[2] ? userRow[2].trim() : 'L';
-                        const userPhone = userRow[3] ? userRow[3].trim() : '011 345 6789';
-                        const actiRoleRaw = userRow[4] ? userRow[4].trim() : '';
-                        const astiRoleRaw = userRow[5] ? userRow[5].trim() : '';
-                        const userPlan = userRow[6] ? userRow[6].trim() : 'Premium (Legacy)';
-                        const profilePicId = userRow[7] ? userRow[7].trim() : '';
+                        // Fallback to Admin (row directly below headers) if no login or email not found
+                        if (!targetUserRow) {
+                            targetUserRow = data[headerRowIndex + 1]; 
+                        }
+                        
+                        // Map data directly by column order
+                        const userName = targetUserRow[0] ? targetUserRow[0].trim() : 'Admin User';
+                        const userEmail = targetUserRow[1] ? targetUserRow[1].trim() : 'admin@gmail.com';
+                        const userGender = targetUserRow[2] ? targetUserRow[2].trim() : 'L';
+                        const userPhone = targetUserRow[3] ? targetUserRow[3].trim() : '011 345 6789';
+                        const actiRoleRaw = targetUserRow[4] ? targetUserRow[4].trim() : '';
+                        const astiRoleRaw = targetUserRow[5] ? targetUserRow[5].trim() : '';
+                        const userPlan = targetUserRow[6] ? targetUserRow[6].trim() : 'Premium (Legacy)';
+                        const profilePicId = targetUserRow[7] ? targetUserRow[7].trim() : '';
                         
                         // Profile Header Updates
                         document.getElementById('user-name').textContent = userName;
@@ -140,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         // PROFILE PICTURE LOGIC
                         const profileImg = document.getElementById('user-profile-pic');
                         
-                        // Robust Google Drive Image URL format to bypass CORS/display issues
+                        // Robust Google Drive Image URL format
                         const baseUrl = "https://lh3.googleusercontent.com/d/";
                         const defaultMaleId = '1rpQ4Zy42TvwZLiy3oplSDvtVeGgDgzKM';
                         const defaultFemaleId = '1YAXVj4nkU75hiV5U0ewPmoU3qErDMB4-';
@@ -192,7 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         // 2. Fetch Plan Inclusions
                         try {
-                            // Trim spaces to ensure correct URL pathing
                             const planDetailsRes = await fetch(`./membership/${userPlan}.txt`);
                             if (planDetailsRes.ok) {
                                 const planData = await planDetailsRes.text();
