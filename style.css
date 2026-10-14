@@ -27,7 +27,7 @@ body {
     left: 0; 
     width: 100%;
     z-index: 1000; 
-    background-color: transparent; /* Initially transparent[cite: 7] */
+    background-color: transparent; /* Initially transparent */
     transition: background-color 0.3s ease; 
     color: white; 
 }
@@ -54,10 +54,9 @@ body {
     align-items: center; 
     justify-content: center; 
     color: white;
-    /* Remove the margin transition from the previous version */
 }
 
-/* Push the main content down so it isn't hidden under the banner */
+/* Dashboard Layout */
 .dashboard-container { 
     display: flex; 
     max-width: 1200px; 
@@ -65,11 +64,6 @@ body {
     padding: 0 20px; 
     flex: 1; 
     width: 100%;
-}
-
-/* Dashboard Layout */
-.dashboard-container { 
-    display: flex; max-width: 1200px; margin: 30px auto; padding: 0 20px; flex: 1; width: 100%;
 }
 
 /* Sidebar */
