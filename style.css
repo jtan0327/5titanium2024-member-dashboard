@@ -3,7 +3,8 @@
     box-sizing: border-box; 
     margin: 0; 
     padding: 0; 
-    font-family: 'ZCOOL KuaiLe', cursive, sans-serif; 
+    /* Comic Sans for Eng/Numbers, falls back to ZCOOL KuaiLe for Chinese */
+    font-family: 'Comic Sans MS', 'Comic Sans', 'ZCOOL KuaiLe', cursive, sans-serif; 
     line-height: 1.25; 
 }
 
