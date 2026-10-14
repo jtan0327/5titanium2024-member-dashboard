@@ -1,6 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
     let usersData = [];
     let currentUser = null;
+    let loggedInEmailString = ""; // To store the exact email the user typed
+
+    // Navbar Scroll Logic for Login Page
+    const topMenu = document.getElementById('top-menu');
+    window.addEventListener('scroll', () => {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > 10) {
+            topMenu.classList.add('scrolled');
+        } else {
+            topMenu.classList.remove('scrolled');
+        }
+    });
 
     // Load data silently in the background when the login page opens
     const sheetId = '11fZl1_k9Txz6zXZqZnZuKcH5PtF6QQuY';
@@ -15,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (headerRowIndex !== -1) {
                 const headers = data[headerRowIndex];
-                // Convert arrays into easy-to-search objects based on the headers
                 usersData = data.slice(headerRowIndex + 1).map(row => {
                     let userObj = {};
                     headers.forEach((headerName, index) => {
@@ -37,8 +48,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Search for user by email (case insensitive)
-        currentUser = usersData.find(u => u.email.toLowerCase() === emailInput.toLowerCase());
+        // Search for user by checking if the typed email exists within the comma-separated list
+        currentUser = usersData.find(u => {
+            if (!u.email) return false;
+            // Split the cell by comma, trim spaces, and check if any match the input
+            const emailList = u.email.split(',').map(e => e.trim().toLowerCase());
+            return emailList.includes(emailInput.toLowerCase());
+        });
 
         if (!currentUser) {
             errorMsg.textContent = "Email not found in our records.";
@@ -46,10 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Email found: Hide Step 1, Show Step 2
+        loggedInEmailString = emailInput; // Save exactly what they typed to show on the next screen
         errorMsg.textContent = "";
         document.getElementById('step-email').style.display = 'none';
         document.getElementById('step-password').style.display = 'block';
-        document.getElementById('display-email').textContent = currentUser.email;
+        document.getElementById('display-email').textContent = loggedInEmailString;
     });
 
     // --- GO BACK: Change Email ---
@@ -57,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         document.getElementById('step-password').style.display = 'none';
         document.getElementById('step-email').style.display = 'block';
-        document.getElementById('password-input').value = ""; // Clear password field
+        document.getElementById('password-input').value = ""; 
         document.getElementById('password-error').textContent = "";
     });
 
@@ -84,8 +101,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // SUCCESS! Save the user's email into browser storage so the dashboard knows who logged in
-        localStorage.setItem('loggedInEmail', currentUser.email);
+        // SUCCESS! Save the typed email into browser storage so the dashboard knows who logged in
+        localStorage.setItem('loggedInEmail', loggedInEmailString);
         
         // Redirect to the provided Google Sites URL
         window.location.href = "https://sites.google.com/view/5titanium2024/member-dashboard";
