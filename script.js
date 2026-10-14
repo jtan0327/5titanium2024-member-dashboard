@@ -1,5 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     
+    // --- 0. AUTHENTICATION CHECK ---
+    // Check if the user is logged in before doing anything else
+    const loggedInEmail = localStorage.getItem('loggedInEmail');
+    if (!loggedInEmail) {
+        // If no email is found in memory, redirect to the login page immediately
+        window.location.href = "login.html";
+        return; // Stop the rest of the dashboard from loading
+    }
+    
     // --- 1. NAVBAR SCROLL LOGIC ---
     const topMenu = document.getElementById('top-menu');
     
@@ -98,41 +107,35 @@ document.addEventListener('DOMContentLoaded', () => {
             const sheetId = '11fZl1_k9Txz6zXZqZnZuKcH5PtF6QQuY';
             const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
             
-            // Check who is logged in
-            const loggedInEmail = localStorage.getItem('loggedInEmail');
-            
             Papa.parse(csvUrl, {
                 download: true,
-                header: false, // Turned off header to bypass the 'member_details' title row
+                header: false,
                 complete: async function(results) {
                     const data = results.data;
                     
-                    // Find the exact row where the real headers start
                     const headerRowIndex = data.findIndex(row => row[0] === 'Name' && row[1] === 'email');
                     
                     if (headerRowIndex !== -1 && data.length > headerRowIndex + 1) {
-                        let targetUserRow = null;
-
-                        // Look for the specific logged-in user by matching email in the comma-separated list
-                        if (loggedInEmail) {
-                            targetUserRow = data.slice(headerRowIndex + 1).find(row => {
-                                if (!row[1]) return false;
-                                const emailList = row[1].split(',').map(e => e.trim().toLowerCase());
-                                return emailList.includes(loggedInEmail.toLowerCase());
-                            });
-                        }
                         
-                        // Fallback to Admin (row directly below headers) if no login or email not found
+                        // Look for the specific logged-in user by matching email in the comma-separated list
+                        const targetUserRow = data.slice(headerRowIndex + 1).find(row => {
+                            if (!row[1]) return false;
+                            const emailList = row[1].split(',').map(e => e.trim().toLowerCase());
+                            return emailList.includes(loggedInEmail.toLowerCase());
+                        });
+                        
+                        // If the user's email was in localStorage but they were deleted from the Google Sheet
                         if (!targetUserRow) {
-                            targetUserRow = data[headerRowIndex + 1]; 
+                            localStorage.removeItem('loggedInEmail'); // Clear the invalid memory
+                            window.location.href = "login.html"; // Kick back to login
+                            return;
                         }
                         
                         // Map data directly by column order
-                        const userName = targetUserRow[0] ? targetUserRow[0].trim() : 'Admin User';
-                        // Display the email they used to log in if it exists, otherwise fall back to the first email in the sheet cell
-                        const userEmail = loggedInEmail ? loggedInEmail : (targetUserRow[1] ? targetUserRow[1].split(',')[0].trim() : 'admin@gmail.com');
+                        const userName = targetUserRow[0] ? targetUserRow[0].trim() : 'User';
+                        const userEmail = loggedInEmail; // Display the exact email they used to log in
                         const userGender = targetUserRow[2] ? targetUserRow[2].trim() : 'L';
-                        const userPhone = targetUserRow[3] ? targetUserRow[3].trim() : '011 345 6789';
+                        const userPhone = targetUserRow[3] ? targetUserRow[3].trim() : 'N/A';
                         const actiRoleRaw = targetUserRow[4] ? targetUserRow[4].trim() : '';
                         const astiRoleRaw = targetUserRow[5] ? targetUserRow[5].trim() : '';
                         const userPlan = targetUserRow[6] ? targetUserRow[6].trim() : 'Premium (Legacy)';
@@ -156,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         // PROFILE PICTURE LOGIC
                         const profileImg = document.getElementById('user-profile-pic');
                         
-                        // Robust Google Drive Image URL format
                         const baseUrl = "https://lh3.googleusercontent.com/d/";
                         const defaultMaleId = '1rpQ4Zy42TvwZLiy3oplSDvtVeGgDgzKM';
                         const defaultFemaleId = '1YAXVj4nkU75hiV5U0ewPmoU3qErDMB4-';
