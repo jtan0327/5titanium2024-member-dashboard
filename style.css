@@ -38,6 +38,8 @@ body {
     border-bottom: 1px solid #333;
 }
 
+.logo-container { display: flex; align-items: center; gap: 10px; }
+.navbar-logo { height: 40px; width: auto; }
 #top-menu .logo-text { font-weight: bold; font-size: 18px; }
 #top-menu .nav-links { display: flex; list-style: none; gap: 15px; align-items: center; }
 #top-menu a { text-decoration: none; color: white; padding: 5px 8px; }
@@ -103,7 +105,7 @@ body {
 
 /* Footer Styles */
 footer { 
-    background: #ffffff; /* White background based on the image */
+    background: #ffffff; /* Explicitly set to white */
     color: #333; 
     text-align: center; 
     padding: 30px 20px; 
@@ -124,25 +126,18 @@ footer {
     justify-content: center;
     width: 40px;
     height: 40px;
-    background-color: #666; /* Dark grey circle */
-    color: white;
+    background-color: #000; /* Icon color set to black */
+    color: #fff;
     border-radius: 50%;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 18px; /* Icon is larger than the text */
     transition: background-color 0.3s ease;
 }
 
-/* Specific color override for LinkTree since it's green in the image */
-.social-icons a[aria-label="LinkTree"] {
-    background-color: #43E660; 
-}
-
-/* Specific style for WhatsApp to match the white background/black icon in the image */
 .social-icons a[aria-label="WhatsApp"] {
     background-color: white;
     color: black;
     border: 2px solid black;
-    font-size: 20px;
 }
 
 .social-icons a:hover {
@@ -150,7 +145,7 @@ footer {
 }
 
 .copyright-text p {
-    font-size: 14px;
+    font-size: 9px; /* Footer text size set to 9 */
     line-height: 1.4;
     margin: 2px 0;
     font-weight: bold;
