@@ -162,3 +162,104 @@ footer {
     #membership-image { order: 99; margin-bottom: 20px; margin-top: 40px; }
     .contact-admin { order: 98; }
 }
+
+/* --- Login Page Specific Styles --- */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 60px 20px;
+    margin-top: 50px; /* Offset for fixed navbar */
+}
+
+.login-card {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.login-card h2 { 
+    margin-bottom: 25px; 
+    font-size: 24px; 
+}
+
+.login-card input {
+    width: 100%;
+    padding: 12px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: sans-serif; /* Keep inputs standard for readability */
+}
+
+.login-card input:focus {
+    outline: none;
+    border-color: #4a86e8;
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #cfe2f3;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: background-color 0.2s;
+}
+
+.primary-btn:hover { 
+    background-color: #a8d0f0; 
+}
+
+.error-msg { 
+    color: #d93025; 
+    font-size: 12px; 
+    min-height: 18px; 
+    margin: 8px 0; 
+    text-align: left;
+    font-family: sans-serif;
+}
+
+.welcome-text { 
+    font-size: 14px; 
+    margin-bottom: 25px; 
+    font-family: sans-serif;
+}
+
+#change-email { 
+    color: #4a86e8; 
+    text-decoration: none; 
+    margin-left: 10px; 
+    font-weight: bold;
+}
+
+.password-container { 
+    position: relative; 
+    display: flex; 
+    align-items: center; 
+}
+
+#toggle-password { 
+    position: absolute; 
+    right: 15px; 
+    cursor: pointer; 
+    font-size: 14px; 
+    color: #555; 
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+.protection-text { 
+    margin-top: 30px; 
+    font-size: 11px; 
+    color: #888; 
+    font-family: sans-serif;
+}
