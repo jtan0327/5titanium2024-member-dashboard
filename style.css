@@ -18,21 +18,53 @@ body {
 
 /* Top Navigation */
 #top-menu { 
-    display: flex; justify-content: space-between; align-items: center; 
-    background: #fff; padding: 15px 30px; 
-    position: sticky; top: 0; z-index: 1000; 
-    border-bottom: 1px solid #ddd;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 30px; 
+    position: fixed; /* Keeps menu at the top of the viewport */
+    top: 0; 
+    left: 0; 
+    width: 100%;
+    z-index: 1000; 
+    background-color: transparent; /* Initially transparent[cite: 7] */
+    transition: background-color 0.3s ease; 
+    color: white; 
 }
-#top-menu .logo-text { font-weight: bold; font-size: 18px; }
-#top-menu .nav-links { display: flex; list-style: none; gap: 15px; }
-#top-menu a { text-decoration: none; color: #333; padding: 5px 8px; }
-#top-menu a.active { font-weight: bold; background-color: #cfe2f3; border-radius: 4px; }
 
-/* Scrolling Banner */
+/* Scrolled state applied via JS */
+#top-menu.scrolled {
+    background-color: #1a1a1a; /* Solid black/dark grey when scrolled */
+    border-bottom: 1px solid #333;
+}
+
+#top-menu .logo-text { font-weight: bold; font-size: 18px; }
+#top-menu .nav-links { display: flex; list-style: none; gap: 15px; align-items: center; }
+#top-menu a { text-decoration: none; color: white; padding: 5px 8px; }
+
+/* Invert the active tab color for dark background */
+#top-menu a.active { font-weight: bold; background-color: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+
+/* Banner Update */
 #banner { 
-    background: #4a86e8; color: white; height: 120px; 
-    display: flex; align-items: center; justify-content: center; 
-    transition: margin-top 0.3s ease; 
+    /* The banner now sits behind the fixed menu */
+    background-color: #4a86e8; /* Replace with your actual banner image via background-image */
+    height: 250px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white;
+    /* Remove the margin transition from the previous version */
+}
+
+/* Push the main content down so it isn't hidden under the banner */
+.dashboard-container { 
+    display: flex; 
+    max-width: 1200px; 
+    margin: 30px auto; 
+    padding: 0 20px; 
+    flex: 1; 
+    width: 100%;
 }
 
 /* Dashboard Layout */
