@@ -35,17 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
     menuProfile.addEventListener('click', (e) => { e.preventDefault(); switchTab(true); });
     menuStatus.addEventListener('click', (e) => { e.preventDefault(); switchTab(false); });
     
-    secProfile.addEventListener('click', (e) => {
-        if(e.target.innerText.toLowerCase().includes('member status')) {
-            switchTab(false);
-        }
+    document.getElementById('link-member-status').addEventListener('click', (e) => { 
+        e.preventDefault(); 
+        switchTab(false); 
     });
 
-    // --- 3. ROLE PARSING (Comma Separator to New Line) ---
+    // --- 3. ROLE PARSING ---
     function populateRoles(roleString, containerId) {
         const container = document.getElementById(containerId);
         container.innerHTML = ''; 
-        if (!roleString) return;
+        if (!roleString || roleString.trim() === '-') return;
 
         const roles = roleString.split(',');
         roles.forEach(role => {
@@ -57,7 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 4. PLAN INCLUSIONS PARSING (Hyphen to Sub-bullets) ---
+    function getFirstRole(roleString) {
+        if (!roleString || roleString.trim() === '-') return '';
+        const firstRole = roleString.split(',')[0].trim();
+        return firstRole ? `- ${firstRole}` : '';
+    }
+
+    // --- 4. PLAN INCLUSIONS PARSING ---
     function parsePlanFeatures(rawText) {
         const lines = rawText.split('\n');
         const listEl = document.getElementById('plan-includes');
@@ -101,27 +106,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (data.length > 0) {
                         const user = data[0]; 
-                        const userPlan = user.Plan || 'Premium (Legacy)';
                         
-                        // Profile UI Updates
+                        const userPlan = user['Membership status'] || 'Premium (Legacy)';
+                        const actiRoleRaw = user['ACTI Role'] || '';
+                        const astiRoleRaw = user['ASTI Role'] || '';
+                        
+                        // Profile Header Updates
                         document.getElementById('user-name').textContent = user.Name || 'Admin User';
-                        document.getElementById('user-email').textContent = user.Email || 'admin@gmail.com';
-                        document.getElementById('user-phone').textContent = user.Phone || '011 345 6789';
+                        document.getElementById('top-acti-role').textContent = getFirstRole(actiRoleRaw);
+                        document.getElementById('top-asti-role').textContent = getFirstRole(astiRoleRaw);
+                        
+                        // Contact Info Updates
+                        document.getElementById('link-member-status').textContent = userPlan;
+                        document.getElementById('user-email').textContent = user.email || 'admin@gmail.com';
+                        document.getElementById('user-phone').textContent = user['phone number'] || '011 345 6789';
+                        
                         document.getElementById('plan-name').textContent = userPlan;
                         
-                        populateRoles(user.ACTI_Roles, 'acti-roles');
-                        populateRoles(user.ASTI_Roles, 'asti-roles');
+                        // Full Department List Updates
+                        populateRoles(actiRoleRaw, 'acti-roles');
+                        populateRoles(astiRoleRaw, 'asti-roles');
 
                         // PROFILE PICTURE LOGIC
                         const userGender = user.Gender || 'L';
                         const profilePicId = user.Profile_Pic_ID ? user.Profile_Pic_ID.trim() : '';
                         const profileImg = document.getElementById('user-profile-pic');
                         
-                        const baseUrl = "https://drive.google.com/uc?export=view&id=";
+                        const baseUrl = "https://drive.usercontent.google.com/download?id=";
                         const defaultMaleId = '1rpQ4Zy42TvwZLiy3oplSDvtVeGgDgzKM';
                         const defaultFemaleId = '1YAXVj4nkU75hiV5U0ewPmoU3qErDMB4-';
 
-                        if (profilePicId) {
+                        if (profilePicId && profilePicId !== '-') {
                             profileImg.src = baseUrl + profilePicId;
                         } else {
                             if (userGender.toUpperCase() === 'P' || userGender.toLowerCase() === 'female') {
