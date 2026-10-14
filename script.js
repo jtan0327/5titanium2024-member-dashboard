@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     menuProfile.addEventListener('click', (e) => { e.preventDefault(); switchTab(true); });
     menuStatus.addEventListener('click', (e) => { e.preventDefault(); switchTab(false); });
     
+    // Jump to Plan Details when Member Status is clicked
     document.getElementById('link-member-status').addEventListener('click', (e) => { 
         e.preventDefault(); 
         switchTab(false); 
@@ -100,27 +101,36 @@ document.addEventListener('DOMContentLoaded', () => {
             
             Papa.parse(csvUrl, {
                 download: true,
-                header: true,
+                header: false, // Turned off header to bypass the 'member_details' title row
                 complete: async function(results) {
                     const data = results.data;
                     
-                    if (data.length > 0) {
-                        const user = data[0]; 
+                    // Find the exact row where the real headers start (Row 2 in your sheet)
+                    const headerRowIndex = data.findIndex(row => row[0] === 'Name' && row[1] === 'email');
+                    
+                    if (headerRowIndex !== -1 && data.length > headerRowIndex + 1) {
+                        // Extract the data from the row immediately below the headers (Row 3 in your sheet)
+                        const userRow = data[headerRowIndex + 1]; 
                         
-                        const userPlan = user['Membership status'] || 'Premium (Legacy)';
-                        const actiRoleRaw = user['ACTI Role'] || '';
-                        const astiRoleRaw = user['ASTI Role'] || '';
+                        // Map data directly by column order from your sheet screenshot
+                        const userName = userRow[0] ? userRow[0].trim() : 'Admin User';
+                        const userEmail = userRow[1] ? userRow[1].trim() : 'admin@gmail.com';
+                        const userGender = userRow[2] ? userRow[2].trim() : 'L';
+                        const userPhone = userRow[3] ? userRow[3].trim() : '011 345 6789';
+                        const actiRoleRaw = userRow[4] ? userRow[4].trim() : '';
+                        const astiRoleRaw = userRow[5] ? userRow[5].trim() : '';
+                        const userPlan = userRow[6] ? userRow[6].trim() : 'Premium (Legacy)';
+                        const profilePicId = userRow[7] ? userRow[7].trim() : '';
                         
                         // Profile Header Updates
-                        document.getElementById('user-name').textContent = user.Name || 'Admin User';
+                        document.getElementById('user-name').textContent = userName;
                         document.getElementById('top-acti-role').textContent = getFirstRole(actiRoleRaw);
                         document.getElementById('top-asti-role').textContent = getFirstRole(astiRoleRaw);
                         
                         // Contact Info Updates
                         document.getElementById('link-member-status').textContent = userPlan;
-                        document.getElementById('user-email').textContent = user.email || 'admin@gmail.com';
-                        document.getElementById('user-phone').textContent = user['phone number'] || '011 345 6789';
-                        
+                        document.getElementById('user-email').textContent = userEmail;
+                        document.getElementById('user-phone').textContent = userPhone;
                         document.getElementById('plan-name').textContent = userPlan;
                         
                         // Full Department List Updates
@@ -128,11 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         populateRoles(astiRoleRaw, 'asti-roles');
 
                         // PROFILE PICTURE LOGIC
-                        const userGender = user.Gender || 'L';
-                        const profilePicId = user.Profile_Pic_ID ? user.Profile_Pic_ID.trim() : '';
                         const profileImg = document.getElementById('user-profile-pic');
                         
-                        const baseUrl = "https://drive.usercontent.google.com/download?id=";
+                        // Robust Google Drive Image URL format to bypass CORS/display issues
+                        const baseUrl = "https://lh3.googleusercontent.com/d/";
                         const defaultMaleId = '1rpQ4Zy42TvwZLiy3oplSDvtVeGgDgzKM';
                         const defaultFemaleId = '1YAXVj4nkU75hiV5U0ewPmoU3qErDMB4-';
 
@@ -146,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         }
 
+                        // Fallback trigger if specific image link is broken
                         profileImg.onerror = function() {
                             if (userGender.toUpperCase() === 'P' || userGender.toLowerCase() === 'female') {
                                 profileImg.src = baseUrl + defaultFemaleId;
@@ -182,6 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         // 2. Fetch Plan Inclusions
                         try {
+                            // Trim spaces to ensure correct URL pathing
                             const planDetailsRes = await fetch(`./membership/${userPlan}.txt`);
                             if (planDetailsRes.ok) {
                                 const planData = await planDetailsRes.text();
