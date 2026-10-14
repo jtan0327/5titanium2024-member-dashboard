@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     menuProfile.addEventListener('click', (e) => { e.preventDefault(); switchTab(true); });
     menuStatus.addEventListener('click', (e) => { e.preventDefault(); switchTab(false); });
     
-    // If user clicks "Member Status" from profile, switch tab automatically
+    // If user clicks "Member Status" text inside the profile section, switch tab
     secProfile.addEventListener('click', (e) => {
         if(e.target.innerText.toLowerCase().includes('member status')) {
             switchTab(false);
@@ -94,60 +94,79 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 5. DATA FETCHING (Google Sheets & GitHub Repo) ---
     async function loadDashboardData() {
         try {
-            // A. Fetch Pricing from the repo folder
-            // Since this runs on GitHub pages, a relative path works.
-            const priceRes = await fetch('./membership/Plan_Price.txt');
-            if (priceRes.ok) {
-                const priceText = await priceRes.text();
-                document.getElementById('plan-price').textContent = priceText.trim();
-            } else {
-                document.getElementById('plan-price').textContent = "RM10/month"; // Fallback
-            }
-
-            // B. Fetch Data from Google Sheets
-            // To bypass CORS and auth, we export the sheet as CSV and use PapaParse.
             const sheetId = '11fZl1_k9Txz6zXZqZnZuKcH5PtF6QQuY';
             const csvUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv`;
             
+            // Fetch User Data from Google Sheets
             Papa.parse(csvUrl, {
                 download: true,
-                header: true, // Uses first row of sheet as keys
-                complete: function(results) {
+                header: true,
+                complete: async function(results) {
                     const data = results.data;
                     
-                    // Assuming we are fetching the first row for the logged-in user
                     if (data.length > 0) {
                         const user = data[0]; 
+                        const userPlan = user.Plan || 'Premium (Legacy)';
                         
-                        // Map spreadsheet columns to UI elements (Ensure column names match your sheet)
+                        // Update Profile UI
                         document.getElementById('user-name').textContent = user.Name || 'Admin User';
                         document.getElementById('user-email').textContent = user.Email || 'admin@gmail.com';
                         document.getElementById('user-phone').textContent = user.Phone || '011 345 6789';
-                        document.getElementById('plan-name').textContent = user.Plan || 'Premium (Legacy)';
+                        document.getElementById('plan-name').textContent = userPlan;
                         
                         populateRoles(user.ACTI_Roles, 'acti-roles');
                         populateRoles(user.ASTI_Roles, 'asti-roles');
+
+                        // 1. Fetch and Parse Pricing from Plan_Price.txt based on userPlan
+                        try {
+                            const priceRes = await fetch('./membership/Plan_Price.txt');
+                            if (priceRes.ok) {
+                                const priceText = await priceRes.text();
+                                const lines = priceText.split('\n');
+                                let matchedPrice = "Price not found";
+
+                                for (let line of lines) {
+                                    if (!line.trim()) continue;
+                                    
+                                    const parts = line.split('|');
+                                    if (parts.length === 2) {
+                                        const planName = parts[0].trim();
+                                        const price = parts[1].trim();
+                                        
+                                        if (planName === userPlan) {
+                                            matchedPrice = price;
+                                            break;
+                                        }
+                                    }
+                                }
+                                document.getElementById('plan-price').textContent = matchedPrice;
+                            } else {
+                                document.getElementById('plan-price').textContent = "RM 10 / month"; // Fallback
+                            }
+                        } catch (error) {
+                            console.error("Error loading price text:", error);
+                            document.getElementById('plan-price').textContent = "RM 10 / month";
+                        }
+
+                        // 2. Fetch Plan Inclusions from the respective .txt file
+                        try {
+                            const planDetailsRes = await fetch(`./membership/${userPlan}.txt`);
+                            if (planDetailsRes.ok) {
+                                const planData = await planDetailsRes.text();
+                                parsePlanFeatures(planData);
+                            } else {
+                                document.getElementById('plan-includes').innerHTML = '<li>Error: Plan details not found.</li>';
+                            }
+                        } catch (error) {
+                            console.error("Error loading plan details text:", error);
+                            document.getElementById('plan-includes').innerHTML = '<li>Error loading plan details.</li>';
+                        }
                     }
                 }
             });
 
-            // Mock Data for Plan Inclusions based on the PDF
-            const mockPlanData = 
-`Full set (no limit)
-Documents
--staple
--arranged
--punched hole when needed
-Fullscapes paper (no limit)
-A4 paper blank (75/80 gsm)
-Exam privilege (Ruler/protractor/eraser)
-Assignment binding tape & staple
-Emergency case (Print / fill document, etc)`;
-            
-            parsePlanFeatures(mockPlanData);
-
         } catch (error) {
-            console.error("Error loading data:", error);
+            console.error("Error loading dashboard data:", error);
         }
     }
 
