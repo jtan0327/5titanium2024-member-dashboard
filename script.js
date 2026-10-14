@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     
     // --- 0. AUTHENTICATION CHECK ---
-    // Check if the user is logged in before doing anything else
     const loggedInEmail = localStorage.getItem('loggedInEmail');
     if (!loggedInEmail) {
-        // If no email is found in memory, redirect to the login page immediately
         window.location.href = "login.html";
-        return; // Stop the rest of the dashboard from loading
+        return; 
     }
     
     // --- 1. NAVBAR SCROLL LOGIC ---
@@ -47,6 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('link-member-status').addEventListener('click', (e) => { 
         e.preventDefault(); 
         switchTab(false); 
+    });
+
+    // --- 2.5 LOGOUT LOGIC ---
+    document.getElementById('menu-logout').addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('loggedInEmail'); // Clear the session
+        window.location.href = "login.html"; // Redirect to login page
     });
 
     // --- 3. ROLE PARSING ---
@@ -117,23 +122,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     if (headerRowIndex !== -1 && data.length > headerRowIndex + 1) {
                         
-                        // Look for the specific logged-in user by matching email in the comma-separated list
                         const targetUserRow = data.slice(headerRowIndex + 1).find(row => {
                             if (!row[1]) return false;
                             const emailList = row[1].split(',').map(e => e.trim().toLowerCase());
                             return emailList.includes(loggedInEmail.toLowerCase());
                         });
                         
-                        // If the user's email was in localStorage but they were deleted from the Google Sheet
                         if (!targetUserRow) {
-                            localStorage.removeItem('loggedInEmail'); // Clear the invalid memory
-                            window.location.href = "login.html"; // Kick back to login
+                            localStorage.removeItem('loggedInEmail'); 
+                            window.location.href = "login.html"; 
                             return;
                         }
                         
-                        // Map data directly by column order
                         const userName = targetUserRow[0] ? targetUserRow[0].trim() : 'User';
-                        const userEmail = loggedInEmail; // Display the exact email they used to log in
+                        const userEmail = loggedInEmail; 
                         const userGender = targetUserRow[2] ? targetUserRow[2].trim() : 'L';
                         const userPhone = targetUserRow[3] ? targetUserRow[3].trim() : 'N/A';
                         const actiRoleRaw = targetUserRow[4] ? targetUserRow[4].trim() : '';
@@ -173,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         }
 
-                        // Fallback trigger if specific image link is broken
                         profileImg.onerror = function() {
                             if (userGender.toUpperCase() === 'P' || userGender.toLowerCase() === 'female') {
                                 profileImg.src = baseUrl + defaultFemaleId;
