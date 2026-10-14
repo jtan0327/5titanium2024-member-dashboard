@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const data = results.data;
                     
-                    // Bulletproof Header Finding: ignores spaces and capitalization
+                    // Bulletproof Header Finding
                     const headerRowIndex = data.findIndex(row => 
                         row[0] && row[0].toString().trim().toLowerCase() === 'name'
                     );
