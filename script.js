@@ -113,10 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (headerRowIndex !== -1 && data.length > headerRowIndex + 1) {
                         let targetUserRow = null;
 
-                        // Look for the specific logged-in user by matching email
+                        // Look for the specific logged-in user by matching email in the comma-separated list
                         if (loggedInEmail) {
                             targetUserRow = data.slice(headerRowIndex + 1).find(row => {
-                                return row[1] && row[1].trim().toLowerCase() === loggedInEmail.toLowerCase();
+                                if (!row[1]) return false;
+                                const emailList = row[1].split(',').map(e => e.trim().toLowerCase());
+                                return emailList.includes(loggedInEmail.toLowerCase());
                             });
                         }
                         
@@ -127,7 +129,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         // Map data directly by column order
                         const userName = targetUserRow[0] ? targetUserRow[0].trim() : 'Admin User';
-                        const userEmail = targetUserRow[1] ? targetUserRow[1].trim() : 'admin@gmail.com';
+                        // Display the email they used to log in if it exists, otherwise fall back to the first email in the sheet cell
+                        const userEmail = loggedInEmail ? loggedInEmail : (targetUserRow[1] ? targetUserRow[1].split(',')[0].trim() : 'admin@gmail.com');
                         const userGender = targetUserRow[2] ? targetUserRow[2].trim() : 'L';
                         const userPhone = targetUserRow[3] ? targetUserRow[3].trim() : '011 345 6789';
                         const actiRoleRaw = targetUserRow[4] ? targetUserRow[4].trim() : '';
