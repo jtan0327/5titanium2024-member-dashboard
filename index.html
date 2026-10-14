@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5 Titanium 2024 - Member Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Menu -->
+    <nav id="top-menu">
+        <div class="logo-text">5 Titanium 2024</div>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">ACTI</a></li>
+            <li><a href="#">ASTI</a></li>
+            <li><a href="#">5钛频道</a></li>
+            <li><a href="#">和中快报</a></li>
+            <li><a href="#">shop</a></li>
+            <li><a href="#" class="active" id="nav-profile">Profile</a></li>
+        </ul>
+    </nav>
+
+    <!-- Scrolling Banner -->
+    <header id="banner">
+        <h1>Welcome to the Dashboard</h1>
+    </header>
+
+    <!-- Main Dashboard Layout -->
+    <div class="dashboard-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar">
+            <ul id="sidebar-menu">
+                <li><a href="#" id="menu-profile" class="active">Profile</a></li>
+                <li><a href="#" id="menu-points">Points</a></li>
+                <li><a href="#" id="menu-status">Member status</a></li>
+            </ul>
+        </aside>
+
+        <!-- Dynamic Content Area -->
+        <main id="content">
+            
+            <!-- Profile Section -->
+            <section id="section-profile">
+                <!-- Font size: 20px via CSS -->
+                <h2 id="user-name" class="name-display">Loading Name...</h2>
+                <div class="contact-info">
+                    <p>Email: <span id="user-email"></span></p>
+                    <p>Phone number: <span id="user-phone"></span></p>
+                </div>
+                
+                <div class="roles-container">
+                    <h3>Department:</h3>
+                    
+                    <div class="role-group">
+                        <p class="role-title">Association Class of Titanium (ACTI)</p>
+                        <!-- Roles injected here. Font size: 14px -->
+                        <ul id="acti-roles" class="role-list"></ul>
+                    </div>
+                    
+                    <div class="role-group">
+                        <p class="role-title">Association Senior of Titanium (ASTI)</p>
+                        <!-- Roles injected here. Font size: 14px -->
+                        <ul id="asti-roles" class="role-list"></ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Member Status Section -->
+            <section id="section-status" style="display: none;">
+                <h2>Your current plan: <span id="plan-name">Premium (Legacy)</span></h2>
+                <!-- Font size: 10px via CSS -->
+                <p class="monthly-charge">Monthly charge: <span id="plan-price">Loading...</span></p>
+                
+                <div class="plan-details">
+                    <h3>Your plan includes:</h3>
+                    <!-- Font size: 14px via CSS. Bullet logic handled in JS -->
+                    <ul id="plan-includes" class="plan-list"></ul>
+                </div>
+                
+                <p class="contact-admin"><i>* please contact administrator to change your plan</i></p>
+                
+                <!-- Placed before footer in mobile via flex-order -->
+                <img src="assets/membership_image.jpg" alt="Membership Image" id="membership-image" onerror="this.style.display='none'">
+            </section>
+
+        </main>
+    </div>
+    
+    <footer>
+        <p>&copy; 2024 5 Titanium</p>
+    </footer>
+
+    <!-- PapaParse for easy Google Sheets CSV parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
