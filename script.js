@@ -1,13 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. BANNER SCROLL LOGIC ---
-    const banner = document.getElementById('banner');
+    // --- 1. NAVBAR SCROLL LOGIC ---
+    const topMenu = document.getElementById('top-menu');
+    
     window.addEventListener('scroll', () => {
         let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        if (scrollTop > 50) {
-            banner.style.marginTop = `-${banner.offsetHeight}px`; // Move banner away
+        
+        // If user scrolls down more than 10 pixels, make the background black
+        if (scrollTop > 10) {
+            topMenu.classList.add('scrolled');
         } else {
-            banner.style.marginTop = '0'; // Bring back when at top
+            // If at the very top, make it transparent again
+            topMenu.classList.remove('scrolled');
         }
     });
 
