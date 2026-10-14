@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - 5 Titanium 2024</title>
+    <title>5 Titanium 2024 - Member Dashboard</title>
     
+    <!-- Import ZCOOL KuaiLe for Chinese characters -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Footer Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Top Menu for Login Page -->
+    <!-- Top Menu -->
     <nav id="top-menu">
         <div class="logo-container">
             <img src="5TI 2024 LO.png" alt="5TI Logo" class="navbar-logo">
@@ -27,45 +30,85 @@
             <li><a href="https://sites.google.com/view/5titanium2024/5%E9%92%9B%E9%A2%91%E9%81%93">5钛频道</a></li>
             <li><a href="https://sites.google.com/view/5titanium2024/%E5%92%8C%E4%B8%AD%E5%BF%AB%E6%8A%A5">和中快报</a></li>
             <li><a href="https://sites.google.com/view/5titanium2024/shop">Shop</a></li>
-            <li><a href="#" class="active">Login</a></li>
+            <li><a href="#" class="active" id="nav-profile">Profile</a></li>
         </ul>
     </nav>
 
     <!-- Scrolling Banner -->
     <header id="banner"></header>
 
-    <!-- Login Container -->
-    <div class="dashboard-container login-wrapper">
-        <div class="login-card">
+    <!-- Main Dashboard Layout -->
+    <div class="dashboard-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar">
+            <ul id="sidebar-menu">
+                <li><a href="#" id="menu-profile" class="active">Profile</a></li>
+                <li><a href="#" id="menu-points">Points</a></li>
+                <li><a href="#" id="menu-status">Member status</a></li>
+                <!-- NEW LOGOUT BUTTON -->
+                <li><a href="#" id="menu-logout" class="logout-btn">Log out</a></li>
+            </ul>
+        </aside>
+
+        <!-- Dynamic Content Area -->
+        <main id="content">
             
-            <!-- Step 1: Email Input -->
-            <div id="step-email">
-                <h2>Sign In</h2>
-                <input type="email" id="email-input" placeholder="Enter email">
-                <p id="email-error" class="error-msg"></p>
-                <button id="next-btn" class="primary-btn">Next</button>
-            </div>
-
-            <!-- Step 2: Password Input -->
-            <div id="step-password" style="display: none;">
-                <h2>Enter your password</h2>
-                <p class="welcome-text">welcome, <span id="display-email"></span> <a href="#" id="change-email">change</a></p>
+            <!-- Profile Section -->
+            <section id="section-profile">
                 
-                <div class="password-container">
-                    <input type="password" id="password-input" placeholder="Password">
-                    <span id="toggle-password">show</span>
+                <!-- Top Header: Picture + Name + Primary Roles -->
+                <div class="profile-header">
+                    <img id="user-profile-pic" src="" alt="Profile Picture" />
+                    
+                    <div class="profile-header-text">
+                        <h2 id="user-name" class="name-display">Loading...</h2>
+                        <p id="top-acti-role" class="top-role"></p>
+                        <p id="top-asti-role" class="top-role"></p>
+                    </div>
                 </div>
-                <p id="password-error" class="error-msg"></p>
-                
-                <button id="signin-btn" class="primary-btn">Sign in</button>
-            </div>
 
-            <!-- Bottom Protection Text -->
-            <p class="protection-text">ACTI member dashboard is protected by ACTI</p>
-        </div>
+                <!-- Contact & Status Info -->
+                <div class="contact-info">
+                    <p>Member status: <a href="#" id="link-member-status" class="status-link">Loading...</a></p>
+                    <p>Email: <span id="user-email"></span></p>
+                    <p>Phone number: <span id="user-phone"></span></p>
+                </div>
+                
+                <!-- Full Department List -->
+                <div class="roles-container">
+                    <h3>Department:</h3>
+                    
+                    <div class="role-group">
+                        <p class="role-title">Association Class of Titanium (ACTI)</p>
+                        <ul id="acti-roles" class="role-list"></ul>
+                    </div>
+                    
+                    <div class="role-group">
+                        <p class="role-title">Association Snooker of Titanium (ASTI)</p>
+                        <ul id="asti-roles" class="role-list"></ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Member Status Section -->
+            <section id="section-status" style="display: none;">
+                <h2>Your current plan: <span id="plan-name">Premium (Legacy)</span></h2>
+                <p class="monthly-charge">Monthly charge: <span id="plan-price">Loading...</span></p>
+                
+                <div class="plan-details">
+                    <h3>Your plan includes:</h3>
+                    <ul id="plan-includes" class="plan-list"></ul>
+                </div>
+                
+                <p class="contact-admin"><i>* please contact administrator to change your plan</i></p>
+                
+                <img src="assets/membership_image.jpg" alt="Membership Image" id="membership-image" onerror="this.style.display='none'">
+            </section>
+
+        </main>
     </div>
     
-    <!-- Footer -->
     <footer>
         <div class="social-icons">
             <a href="https://youtube.com/@ACTI2024" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
@@ -86,8 +129,8 @@
         </div>
     </footer>
 
-    <!-- PapaParse for Google Sheets -->
+    <!-- PapaParse for easy Google Sheets CSV parsing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <script src="login.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
