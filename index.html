@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>5 Titanium 2024 - Member Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-
-    <!-- Import ZCOOL KuaiLe from Google Fonts -->
+    
+    <!-- Import ZCOOL KuaiLe for Chinese characters -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
@@ -18,19 +17,21 @@
     <nav id="top-menu">
         <div class="logo-text">5 Titanium 2024</div>
         <ul class="nav-links">
+            <li><a href="#">Member Dashboard</a></li>
             <li><a href="#">Home</a></li>
             <li><a href="#">ACTI</a></li>
             <li><a href="#">ASTI</a></li>
             <li><a href="#">5钛频道</a></li>
             <li><a href="#">和中快报</a></li>
-            <li><a href="#">Shop</a></li>
+            <li><a href="#">shop</a></li>
             <li><a href="#" class="active" id="nav-profile">Profile</a></li>
+            <li><a href="#">🔍</a></li>
         </ul>
     </nav>
 
     <!-- Scrolling Banner -->
     <header id="banner">
-        <h1>Welcome to the Dashboard</h1>
+        <!-- Banner background controlled via CSS -->
     </header>
 
     <!-- Main Dashboard Layout -->
@@ -50,6 +51,11 @@
             
             <!-- Profile Section -->
             <section id="section-profile">
+                <!-- Profile Picture Container -->
+                <div class="profile-pic-container">
+                    <img id="user-profile-pic" src="" alt="Profile Picture" />
+                </div>
+
                 <!-- Font size: 20px via CSS -->
                 <h2 id="user-name" class="name-display">Loading Name...</h2>
                 <div class="contact-info">
