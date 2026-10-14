@@ -74,6 +74,15 @@ body {
 }
 #sidebar a.active, #sidebar a:hover { font-weight: bold; background-color: #cfe2f3; }
 
+/* New Logout Button Styling */
+#sidebar a.logout-btn {
+    color: #d93025; /* Red color to indicate exit/logout */
+    margin-top: 30px; /* Gives it some space from the other tabs */
+}
+#sidebar a.logout-btn:hover {
+    background-color: #fce8e6; /* Light red hover effect */
+}
+
 /* Main Content Area */
 #content { flex: 1; padding-left: 30px; }
 
@@ -167,84 +176,17 @@ footer {
     text-align: center;
 }
 
-.login-card h2 { 
-    margin-bottom: 25px; 
-    font-size: 24px; 
-}
-
-.login-card input {
-    width: 100%;
-    padding: 12px 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    font-family: sans-serif;
-}
-
-.login-card input:focus {
-    outline: none;
-    border-color: #4a86e8;
-}
-
-.primary-btn {
-    width: 100%;
-    padding: 12px;
-    background-color: #cfe2f3;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 5px;
-    transition: background-color 0.2s;
-}
-
+.login-card h2 { margin-bottom: 25px; font-size: 24px; }
+.login-card input { width: 100%; padding: 12px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; font-family: sans-serif; }
+.login-card input:focus { outline: none; border-color: #4a86e8; }
+.primary-btn { width: 100%; padding: 12px; background-color: #cfe2f3; border: none; border-radius: 4px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 5px; transition: background-color 0.2s; }
 .primary-btn:hover { background-color: #a8d0f0; }
-
-.error-msg { 
-    color: #d93025; 
-    font-size: 12px; 
-    min-height: 18px; 
-    margin: 8px 0; 
-    text-align: left;
-    font-family: sans-serif;
-}
-
-.welcome-text { 
-    font-size: 14px; 
-    margin-bottom: 25px; 
-    font-family: sans-serif;
-}
-
-#change-email { 
-    color: #4a86e8; 
-    text-decoration: none; 
-    margin-left: 10px; 
-    font-weight: bold;
-}
-
-.password-container { 
-    position: relative; 
-    display: flex; 
-    align-items: center; 
-}
-
-#toggle-password { 
-    position: absolute; 
-    right: 15px; 
-    cursor: pointer; 
-    font-size: 14px; 
-    color: #555; 
-    font-weight: bold;
-    font-family: sans-serif;
-}
-
-.protection-text { 
-    margin-top: 30px; 
-    font-size: 11px; 
-    color: #888; 
-    font-family: sans-serif;
-}
+.error-msg { color: #d93025; font-size: 12px; min-height: 18px; margin: 8px 0; text-align: left; font-family: sans-serif; }
+.welcome-text { font-size: 14px; margin-bottom: 25px; font-family: sans-serif; }
+#change-email { color: #4a86e8; text-decoration: none; margin-left: 10px; font-weight: bold; }
+.password-container { position: relative; display: flex; align-items: center; }
+#toggle-password { position: absolute; right: 15px; cursor: pointer; font-size: 14px; color: #555; font-weight: bold; font-family: sans-serif; }
+.protection-text { margin-top: 30px; font-size: 11px; color: #888; font-family: sans-serif; }
 
 /* Responsive / Mobile View */
 @media (max-width: 768px) {
@@ -253,6 +195,8 @@ footer {
     #sidebar { width: 100%; border-right: none; border-bottom: 2px solid #eee; margin-bottom: 20px; padding-bottom: 10px; padding-right: 0; }
     #sidebar-menu { display: flex; justify-content: space-around; flex-wrap: wrap; }
     #sidebar a { padding: 8px 10px; text-align: center; }
+    /* Override margin for logout on mobile so it sits cleanly */
+    #sidebar a.logout-btn { margin-top: 0; }
     
     #content { padding-left: 0; display: flex; flex-direction: column; }
     
